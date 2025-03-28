@@ -13,6 +13,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -22,21 +25,36 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - run: pwd
-      - run: ls
-
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       
       - run: pwd
       - run: ls
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      # GitHub Actions for PNPM
+      # https://pnpm.io/continuous-integration#github-actions
+      - name: Install pnpm
+        # https://github.com/pnpm/action-setup
+        uses: pnpm/action-setup@v4
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Use Node.js
+        # https://github.com/actions/setup-node
+        uses: actions/setup-node@v4
+        with:
+          # https://github.com/nodejs/Release/blob/main/CODENAMES.md
+          node-version: lts/Jod
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsworking-directory
+        working-directory: ./src
+        run: pnpm run build
+
+      - name: Deploy to GitHub Pages
+        # https://github.com/marketplace/actions/deploy-to-github-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist

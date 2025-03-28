@@ -1,0 +1,11 @@
+html {
+  font-size: 16px;
+  font-family: system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: black;
+    color: white;
+  }
+}

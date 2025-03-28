@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.bundler",
+  "include": [
+    "./**/*",
+  ],
+  "exclude": [
+    "**/node_modules",
+  ],
+}
