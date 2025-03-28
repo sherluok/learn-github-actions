@@ -53,8 +53,24 @@ jobs:
         working-directory: ./src
         run: pnpm run build
 
-      - name: Deploy to GitHub Pages
-        # https://github.com/marketplace/actions/deploy-to-github-pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      # - name: Deploy to GitHub Pages
+      #   # https://github.com/marketplace/actions/deploy-to-github-pages
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: dist
+
+      # https://cr.console.aliyun.com/
+      - name: Login into Aliyun Image Registry
+        # https://github.com/docker/login-action
+        uses: docker/login-action@v3
         with:
-          folder: dist
+          registry: ${{ secrets.DOCKER_LOGIN_REGISTRY }}
+          username: ${{ secrets.DOCKER_LOGIN_USERNAME }}
+          password: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
+      
+      - name: Docker Build and Push
+        # https://github.com/docker/build-push-action
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: sherluok/learn-github-actions:latest

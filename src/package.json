@@ -4,7 +4,7 @@
   "scripts": {
     "test": "node --import tsx --test ./**/*.test.ts",
     "dev": "node --env-file ../scripts/targets/local.env --import tsx ../scripts/commands/webpack.ts serve",
-    "build": "node --env-file ../scripts/targets/prod.env --import tsx ../scripts/commands/webpack.ts build"
+    "build": "node --env-file ../scripts/targets/nginx.env --import tsx ../scripts/commands/webpack.ts build"
   },
   "devDependencies": {
     "@types/node": "^22.13.13",
